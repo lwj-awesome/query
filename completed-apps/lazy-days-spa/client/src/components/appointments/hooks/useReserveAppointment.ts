@@ -35,7 +35,7 @@ export function useReserveAppointment(): UseMutateFunction<
   const { user } = useUser();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
-
+  // 뮤테이션은 일회성이기 때문에, 캐싱이 없음. 리페치, isLoading, 없음. isFetching만 있음.
   const { mutate } = useMutation(
     (appointment: Appointment) => setAppointmentUser(appointment, user?.id),
     {

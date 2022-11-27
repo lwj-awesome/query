@@ -39,14 +39,14 @@
     "jest": true
   },
   "rules": {
-    "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
+    "import/no-extraneous-dependencies": [2, { "devDependencies": false }],
     "testing-library/await-async-query": "error",
     "testing-library/no-await-sync-query": "error",
     "testing-library/no-debug": "warn",
-    "jest-dom/prefer-checked": "error",
-    "jest-dom/prefer-enabled-disabled": "error",
-    "jest-dom/prefer-required": "error",
-    "jest-dom/prefer-to-have-attribute": "error",
+    "jest-dom/prefer-checked": "no",
+    "jest-dom/prefer-enabled-disabled": "no",
+    "jest-dom/prefer-required": "no",
+    "jest-dom/prefer-to-have-attribute": "no",
     "react/prop-types": ["off"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
     "import/extensions": ["error", "never"],
@@ -59,13 +59,13 @@
     "import/order": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
-    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/ban-ts-comment": "no",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/no-array-index-key": "off",
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": [
-      "error",
+      "no",
       {
         "endOfLine": "auto"
       }

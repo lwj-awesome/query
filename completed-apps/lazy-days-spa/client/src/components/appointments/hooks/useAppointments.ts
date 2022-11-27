@@ -46,36 +46,36 @@ interface UseAppointments {
   setShowAll: Dispatch<SetStateAction<boolean>>;
 }
 
-// The purpose of this hook:
-//   1. track the current month/year (aka monthYear) selected by the user
-//     1a. provide a way to update state
-//   2. return the appointments for that particular monthYear
-//     2a. return in AppointmentDateMap format (appointment arrays indexed by day of month)
-//     2b. prefetch the appointments for adjacent monthYears
-//   3. track the state of the filter (all appointments / available appointments)
-//     3a. return the only the applicable appointments for the current monthYear
+// 이 후크의 용도:
+// 1. 사용자가 선택한 현재 월/년(일명 월년)을 추적합니다.
+// 1a. 상태를 업데이트하는 방법을 제공합니다.
+// 2. 해당 월의 약속을 반환합니다.
+// 2a. 약속 날짜 맵 형식으로 반환(일별로 색인화된 약속 배열)
+// 2b. 인접한 달의 약속을 미리 가져옵니다.년
+// 3. 필터 상태 추적(모든 약속/사용 가능한 약속)
+// 3a. 현재 월에 해당하는 약속만 반환합니다. 연도
 export function useAppointments(): UseAppointments {
   /** ****************** START 1: monthYear state *********************** */
-  // get the monthYear for the current date (for default monthYear state)
+  // 현재 날짜에 대한 월 연도 가져오기(기본 월 연도 상태의 경우)
   const currentMonthYear = getMonthYearDetails(dayjs());
 
-  // state to track current monthYear chosen by user
-  // state value is returned in hook return object
+  // 현재 월을 추적할 state 사용자가 선택한 연도
+  // 후크 반환 개체에서 상태 값이 반환됨
   const [monthYear, setMonthYear] = useState(currentMonthYear);
 
-  // setter to update monthYear obj in state when user changes month in view,
-  // returned in hook return object
+  // setter에서 사용자가 월 보기를 변경할 때 월년 객체 상태를 업데이트합니다.
+  // 후크 반환 개체에서 반환됨
   function updateMonthYear(monthIncrement: number): void {
     setMonthYear((prevData) => getNewMonthYear(prevData, monthIncrement));
   }
   /** ****************** END 1: monthYear state ************************* */
   /** ****************** START 2: filter appointments  ****************** */
-  // State and functions for filtering appointments to show all or only available
+  // 모두 또는 사용 가능한 약속만 표시하도록 약속을 필터링하기 위한 상태 및 기능
   const [showAll, setShowAll] = useState(false);
 
-  // We will need imported function getAvailableAppointments here
-  // We need the user to pass to getAvailableAppointments so we can show
-  //   appointments that the logged-in user has reserved (in white)
+  // 여기서 가져오기 기능 getAvailableAppointments가 필요합니다.
+  // 사용자가 Available Appointments를 사용할 수 있도록 전달해야 합니다.
+  // 로그인한 사용자가 예약한 약속(흰색)
   const { user } = useUser();
 
   const selectFn = useCallback((data) => getAvailableAppointments(data, user), [
@@ -83,9 +83,9 @@ export function useAppointments(): UseAppointments {
   ]);
   /** ****************** END 2: filter appointments  ******************** */
   /** ****************** START 3: useQuery  ***************************** */
-  // useQuery call for appointments for the current monthYear
+  // 현재 월의 약속에 대해 쿼리 호출을 사용
 
-  // prefetch next month when monthYear changes
+  // 월년이 변경되는 다음 달에 미리 가져오기
   const queryClient = useQueryClient();
   useEffect(() => {
     // assume increment of one month
@@ -97,21 +97,21 @@ export function useAppointments(): UseAppointments {
     );
   }, [queryClient, monthYear]);
 
-  // Notes:
-  //    1. appointments is an AppointmentDateMap (object with days of month
-  //       as properties, and arrays of appointments for that day as values)
+  // 1. 약속은 약속 날짜 맵(일이 있는 개체)입니다.
+  // 속성 및 해당 날짜에 대한 약속 배열 값)
   //
-  //    2. The getAppointments query function needs monthYear.year and
-  //       monthYear.month
+  // 2. getAppointments 쿼리 기능을 사용하려면 month Year가 필요합니다.연도와
+  // 월년월
   const fallback = {};
 
   const { data: appointments = fallback } = useQuery(
     [queryKeys.appointments, monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
     {
-      // can't use `undefined` here; need to use identity function
-      // see this Q&A for more details:
-      // https://www.udemy.com/course/learn-react-query/learn/#questions/18249892/
+      // 여기서 'undefined'를 사용할 수 없습니다. ID 함수를 사용해야 합니다.
+      // 자세한 내용은 다음 Q&A를 참조하십시오.
+      // https://www.udemy.com/course/learn-react-query/learn/#https/https9892/
+
       select: showAll ? (data) => identity<AppointmentDateMap>(data) : selectFn,
       ...commonOptions,
       refetchOnMount: true,

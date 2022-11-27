@@ -12,11 +12,14 @@ function queryErrorHandler(error: unknown): void {
   toast.closeAll();
   toast({ title, status: 'error', variant: 'subtle', isClosable: true });
 }
-
+// 에러 핸들링을 쿼리 설정 부분에서 디폴트 값으로 넣어주면 됨.
+// 에러 핸들러를 각 유즈쿼리에 넣어줄 필요가 없음.
 export function generateQueryClient(): QueryClient {
   return new QueryClient({
     defaultOptions: {
       queries: {
+        // 기본적으로 캐싱 처리를 해주는 것임. 데이터가 빈번하게 변하지 않는다면 쿼리즈 옵션으로
+        // 캐싱 처리를 할 수 있음 (빈번하게 업뎃을 해야한다면 밑 3개의 옵션을 true로 주고 쓰면 됨)
         onError: queryErrorHandler,
         staleTime: 600000, // 10 minutes
         cacheTime: 900000, // default cacheTime is 5 minutes; doesn't make sense for staleTime to exceed cacheTime

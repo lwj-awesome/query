@@ -40,24 +40,24 @@ export function useUser(): UseUser {
   const { data: user } = useQuery<User>(
     queryKeys.user,
     ({ signal }) => getUser(user, signal),
-    // ALTERNATE query function to maintain user after mutation
-    // (see https://www.udemy.com/course/learn-react-query/learn/#questions/17098438/
-    // for discussion)
-    // ({ signal }) => {
-    //   const storedUser = getStoredUser();
-    //   const currentUser = user ?? storedUser;
-    //   return getUser(currentUser, signal);
+    // 변환 후 사용자를 유지하기 위한 대체 쿼리 기능
+    // (https://www.udemy.com/course/learn-react-query/learn/#1794/17098438/ 참조)
+    // 토론용)
+    // ({signal }) => {
+    // conststoredUser = getStoredUser();
+    // concurrentUser = 사용자 ?? 저장된 사용자;
+    // getUser(현재 사용자, 신호)를 반환합니다.
     // },
     {
       // populate initially with user in localStorage
       initialData: getStoredUser,
 
-      // note: onSuccess is called on both successful query function completion
-      //     *and* on queryClient.setQueryData
-      // the `received` argument to onSuccess will be:
-      //    - null, if this is called on queryClient.setQueryData in clearUser()
-      //    - User, if this is called from queryClient.setQueryData in updateUser()
-      //         *or* from the getUser query function call
+      // 참고: onSuccess는 성공적인 쿼리 함수 완료 시 모두 호출됩니다.
+      // * 및 * 쿼리 클라이언트에 표시됩니다.setQueryData
+      // onSuccess에 대한 '수신' 인수는 다음과 같습니다.
+      // - queryClient에서 호출된 경우 null입니다.setQueryData in clearUser()
+      // - queryClient에서 호출된 경우 사용자.updateUser()에서 setQueryData()
+      // getUser 쿼리 함수 호출에서 *또는*
       onSuccess: (received: null | User) => {
         if (!received) {
           clearStoredUser();
