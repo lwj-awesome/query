@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
 
 import { generateQueryClient } from '../react-query/queryClient';
 
-// suppress errors written to console
+// suppress errors written to console  git test
 setLogger({
   log: console.log,
   warn: console.warn,
