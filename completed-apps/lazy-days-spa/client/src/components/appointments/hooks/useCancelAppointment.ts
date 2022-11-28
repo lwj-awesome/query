@@ -8,6 +8,7 @@ import { useCustomToast } from '../../app/hooks/useCustomToast';
 // for when server call is needed
 async function removeAppointmentUser(appointment: Appointment): Promise<void> {
   const patchData = [{ op: 'remove', path: '/userId' }];
+  console.log('test DAta', patchData);
   await axiosInstance.patch(`/appointment/${appointment.id}`, {
     data: patchData,
   });

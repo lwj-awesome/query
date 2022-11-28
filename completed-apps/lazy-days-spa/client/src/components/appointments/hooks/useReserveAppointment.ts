@@ -17,7 +17,6 @@ async function setAppointmentUser(
     data: patchData,
   });
 }
-
 // Alternate typescript annotation
 // For more details, see
 // https://www.udemy.com/course/learn-react-query/learn/#questions/18259670/

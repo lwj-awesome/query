@@ -37,6 +37,10 @@ export function usePatchUser(): UseMutateFunction<
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 
+  // 옵티미스틱 업데이트 (낙관적 업데이트)
+  // 어차피 바뀔거 서버에서 데이터 넘겨받기 전에 미리 업데이트 시켜버리는 것 (UI를)
+  // 대신 실패하게 되면 그 전 데이터 (캐싱된)를 받아서 롤백 시켜버림.
+  // 통신이 안될때의 롤백 정도의 의미? 잘 모르것네
   const { mutate: patchUser } = useMutation(
     (newUserData: User) => patchUserOnServer(newUserData, user),
     {

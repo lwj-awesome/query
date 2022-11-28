@@ -120,6 +120,7 @@ export function useAppointments(): UseAppointments {
       refetchInterval: 60000, // 60 seconds
     }
   );
+  console.log('ddd', appointments);
 
   /** ****************** END 3: useQuery  ******************************* */
 
