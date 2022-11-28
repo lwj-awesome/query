@@ -1,9 +1,7 @@
 import type { Staff } from '../../../../shared/types';
 
-export function filterByTreatment(
-  staff: Staff[],
-  treatmentName: string
-): Staff[] {
+export function filterByTreatment(staff: any, treatmentName: string): Staff[] {
+  console.log('sss', staff);
   return staff.filter((person) =>
     person.treatmentNames
       .map((t) => t.toLowerCase())

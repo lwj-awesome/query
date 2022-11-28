@@ -9,7 +9,7 @@ export function AllStaff(): ReactElement {
   // replace with data from React Query
   const { staff, filter, setFilter } = useStaff();
   const treatments = useTreatments();
-  console.log(staff, filter);
+
   return (
     <Box>
       <Heading mt={10} textAlign="center">

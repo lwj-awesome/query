@@ -8,6 +8,7 @@ import { filterByTreatment } from '../utils';
 
 async function getStaff(): Promise<Staff[]> {
   const { data } = await axiosInstance.get('/staff');
+  console.log('data???', data);
   return data;
 }
 
@@ -23,51 +24,15 @@ export function useStaff(): UseStaff {
   // const selectFn = (unfilteredStaff) =>
   //   filterByTreatment(unfilteredStaff, filter);
 
-  const selectFn = useCallback(
-    (unfilteredStaff) => filterByTreatment(unfilteredStaff, filter),
-    [filter]
-  );
+  // 유즈쿼리 안 select에 data(패칭된)가 들어있음. 함수의 파라미터는 저 데이터를 받음
+
+  const selectFn = useCallback((x: Staff[]) => filterByTreatment(x, filter), [
+    filter,
+  ]);
+  // const selectFn = (x) => filterByTreatment(x, filter);
+  console.log(selectFn);
   const test = () => {
     return [
-      {
-        id: 1,
-        name: 'Divyaㅇㅇㅇ',
-        treatmentNames: ['facial', 'scrub'],
-        image: {
-          fileName: 'divya.jpg',
-          authorName: 'Pradeep Ranjan',
-          authorLink:
-            'https://unsplash.com/@tinywor1d?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText',
-          platformName: 'Unsplash',
-          platformLink: 'https://unsplash.com/',
-        },
-      },
-      {
-        id: 1,
-        name: 'Divya',
-        treatmentNames: ['facial', 'scrub'],
-        image: {
-          fileName: 'divya.jpg',
-          authorName: 'Pradeep Ranjan',
-          authorLink:
-            'https://unsplash.com/@tinywor1d?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText',
-          platformName: 'Unsplash',
-          platformLink: 'https://unsplash.com/',
-        },
-      },
-      {
-        id: 1,
-        name: 'Divya',
-        treatmentNames: ['facial', 'scrub'],
-        image: {
-          fileName: 'divya.jpg',
-          authorName: 'Pradeep Ranjan',
-          authorLink:
-            'https://unsplash.com/@tinywor1d?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText',
-          platformName: 'Unsplash',
-          platformLink: 'https://unsplash.com/',
-        },
-      },
       {
         id: 1,
         name: 'Divya',
@@ -83,14 +48,14 @@ export function useStaff(): UseStaff {
       },
     ];
   };
-  console.log('dlwpp', selectFn);
   const fallback = [];
   const { data: staff = fallback } = useQuery(queryKeys.staff, getStaff, {
     // 셀렉트 함수는 데이터가 변하고 함수가 변해야지만 재실행함. 메모이제이션 최적화가 되어 잇음
     // selectFn을 useCallback과 함께 사용해야함.
     // 라디오 그룹에서 넘어온 (바뀐 value)가 selectFn 함수를 재실행하면 select 옵션이 실행
     // 넘어오는 데이터의 형식과 일치하는 데이터를 return 하는 함수만 올 수 있음.
-    select: filter !== 'all' ? test : undefined,
+    select: filter !== 'all' ? selectFn : undefined,
+    // select: (x) => filterByTreatment(x, filter),
   });
 
   return { staff, filter, setFilter };

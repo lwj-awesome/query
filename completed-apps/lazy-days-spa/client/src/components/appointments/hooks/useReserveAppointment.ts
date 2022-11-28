@@ -40,6 +40,8 @@ export function useReserveAppointment(): UseMutateFunction<
     (appointment: Appointment) => setAppointmentUser(appointment, user?.id),
     {
       onSuccess: () => {
+        // appointmets 쿼리키를 가진 유즈쿼리를 무효화(stale)로 넘기고
+        // 리페칭을 시켜버리는 것
         queryClient.invalidateQueries([queryKeys.appointments]);
         toast({
           title: 'You have reserved the appointment!',
